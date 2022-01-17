@@ -377,8 +377,10 @@ export class WordleComponent implements OnInit {
       }, ms);
     })
   }
+  
   showHelpDialogContainer=false;
   showHelpDialog=false;
+
   private showHelp(){
     setTimeout(() => {
       this.showHelpDialogContainer = true;
@@ -389,6 +391,7 @@ export class WordleComponent implements OnInit {
       });
     }, 1500);
   }
+
   closeHelp(){
     this.showHelpDialogContainer = false;
     this.showHelpDialog = false;

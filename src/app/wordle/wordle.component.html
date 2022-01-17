@@ -1,67 +1,80 @@
 <div class="container">
-	<div class="title-container">
-		<div class="title"> My Wordle </div>
+  <div class="title-container">
+    <div class="title">My Wordle</div>
     <div class="subtitle">
-    <button class="btn-reply" (click)='hintHandler()'>Hint</button>
-    <button class="btn-reply" (click)='reset()'>Reset</button>
-    <button class="btn-reply" (click)='play()'>Help</button>
-    <p *ngIf="showHint">The word contains: <span>{{hint}}</span></p>
+      <button class="btn-reply" (click)="hintHandler()">Hint</button>
+      <button class="btn-reply" (click)="reset()">Reset</button>
+      <button class="btn-reply" (click)="play()">Help</button>
+      <p *ngIf="showHint">
+        The word contains: <span>{{ hint }}</span>
+      </p>
+    </div>
   </div>
 
-	</div>
+  <div class="main">
+    <div class="try-container" *ngFor="let try of tries" #tryContainer>
+      <div
+        class="letter-container"
+        *ngFor="let letter of try.letters"
+        [class.match]="letter.state === LetterState.FULL_MATCH"
+        [class.partial]="letter.state === LetterState.PARTIAL_MATCH"
+        [class.wrong]="letter.state === LetterState.WRONG"
+        [class.has-text]="letter.text !== ''"
+      >
+        {{ letter.text }}
+      </div>
+    </div>
+  </div>
 
-	<div class="main">
+  <div class="keyboard-container">
+    <div
+      [class]="['row' + i, 'row'].join(' ')"
+      *ngFor="let row of keyboardRows; let i = index"
+    >
+      <div
+        *ngFor="let key of row"
+        [class]="getKeyClass(key)"
+        [class.enter]="key === 'Enter'"
+        (click)="handleClickKey(key)"
+      >
+        <div *ngIf="key !== 'Backspace'; else backspace">
+          {{ key }}
+        </div>
+        <ng-template #backspace>
+          <img src="../assets/backspace.svg" />
+        </ng-template>
+      </div>
+    </div>
+  </div>
 
-		<div class="try-container" *ngFor="let try of tries" #tryContainer>
-			<div class="letter-container" *ngFor="let letter of try.letters"
-			    [class.match]="letter.state === LetterState.FULL_MATCH"
-			    [class.partial]="letter.state === LetterState.PARTIAL_MATCH"
-			    [class.wrong]="letter.state === LetterState.WRONG"
-			    [class.has-text]="letter.text !== ''">
-				{{letter.text}}
-			</div>
-		</div>
-	</div>
+  <div
+    class="info-msg"
+    [class.show]="infoMsg !== ''"
+    [class.fade-out]="fadeOutInfoMessage"
+  >
+    {{ infoMsg }}
+  </div>
 
-	<div class="keyboard-container">
-		<div [class]="['row' + i, 'row'].join(' ')"
-		    *ngFor="let row of keyboardRows; let i = index">
-			<div *ngFor="let key of row" [class]="getKeyClass(key)"
-			    [class.enter]="key === 'Enter'"
-					(click)="handleClickKey(key)">
-				<div *ngIf="key !== 'Backspace'; else backspace">
-				  {{key}}
-				</div>
-				<ng-template #backspace>
-					<img src="../assets/backspace.svg"/>
-				</ng-template>
-			</div>
-		</div>
-	</div>
-
-	<div class="info-msg"
-	    [class.show]="infoMsg !== ''"
-	    [class.fade-out]="fadeOutInfoMessage">
-		{{infoMsg}}
-	</div>
-
-	<div class="share-dialog-container" [class.show]="showShareDialogContainer">
-		<div class="share-dialog" [class.show]="showShareDialog">
-			<button (click)="handleClickShare()">Share</button>
-		</div>
-	</div>
+  <div class="share-dialog-container" [class.show]="showShareDialogContainer">
+    <div class="share-dialog" [class.show]="showShareDialog">
+      <button (click)="handleClickShare()">Share</button>
+    </div>
+  </div>
   <div class="help-dialog-container" [class.show]="showHelpDialogContainer">
     <div class="help-dialog" [class.show]="showHelpDialog">
-    <p style="margin-top: 5px;">You have to guess a word of 5 letters</p><hr>
-    <p>You have 6 tries as six rows of grid</p><hr>
-    <p>After Entering the word hit enter</p><hr>
-    <p>If letter is in word and at correct place then cell will turn green</p><hr>
-    <p>If letter is in word but not at current place cell will turn orange</p><hr>
-    <p>If letter is not present then cell will turn grey </p>
-      <hr>
-			<button (click)="closeHelp()" >Close</button>
+      <p style="margin-top: 5px">You have to guess a word of 5 letters</p>
+      <hr />
+      <p>You have 6 tries as six rows of grid</p>
+      <hr />
+      <p>After Entering the word hit enter</p>
+      <hr />
+      <p>If letter is in word and at correct place then cell will turn green</p>
+      <hr />
+      <p>If letter is in word but not at current place cell will turn orange</p>
+      <hr />
+      <p>If letter is not present then cell will turn grey</p>
+      
+      <button (click)="closeHelp()">Close</button>
     </div>
-
-	</div>
+  </div>
 </div>
-
