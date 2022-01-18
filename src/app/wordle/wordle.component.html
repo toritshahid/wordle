@@ -2,11 +2,11 @@
   <div class="title-container">
     <div class="title">My Wordle</div>
     <div class="subtitle">
-      <button class="btn-reply" (click)="hintHandler()">Hint</button>
+      <!-- <button class="btn-reply" (click)="hintHandler()">Hint</button> -->
       <button class="btn-reply" (click)="reset()">Reset</button>
       <button class="btn-reply" (click)="play()">Help</button>
       <p *ngIf="showHint">
-        The word contains: <span>{{ hint }}</span>
+        Target Word : <span>{{ hint }}</span>
       </p>
     </div>
   </div>

@@ -44,6 +44,7 @@ enum LetterState {
   templateUrl: './wordle.component.html',
   styleUrls: ['./wordle.component.scss']
 })
+
 export class WordleComponent implements OnInit {
 
   @ViewChildren('tryContainer') tryContainers!: QueryList<ElementRef>;
@@ -56,6 +57,12 @@ export class WordleComponent implements OnInit {
   readonly LetterState = LetterState;
 
   // Keyboard rows.
+  // readonly keyboardRows = [
+  //   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+  //   ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+  //   ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
+  // ];
+
   readonly keyboardRows = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -115,8 +122,9 @@ export class WordleComponent implements OnInit {
       }
     }
     // Print it out so we can cheat!:)
-    //console.log('target word: ', this.targetWord);
-
+    console.log('target word: ', this.targetWord);
+    this.hint = this.targetWord;
+    
     // Generate letter counts for target word.
     for (const letter of this.targetWord) {
       const count = this.targetWordLetterCounts[letter];
@@ -132,6 +140,7 @@ export class WordleComponent implements OnInit {
   handleKeyboardEvent(event: KeyboardEvent) {
     this.handleClickKey(event.key);
   }
+
   reset(){
     window.location.reload();
   }
@@ -150,12 +159,17 @@ export class WordleComponent implements OnInit {
         return 'key';
     }
   }
+
   showHint=false
   hint = '';
+
   hintHandler(){
     this.showHint=true;
     this.hint = this.targetWord[2]+" "+this.targetWord[4]
+    // this.hint = this.targetWord;
+    // console.log(this.hint)
   }
+
   handleClickKey(key: string) {
     // Don't process key down when user has won the game.
     if (this.won) {
@@ -185,6 +199,7 @@ export class WordleComponent implements OnInit {
       this.checkCurrentTry();
     }
   }
+
   play(){
     this.showHelp();
   }
@@ -193,6 +208,7 @@ export class WordleComponent implements OnInit {
     // 🟩🟨⬜
     // Copy results into clipboard.
     let clipboardContent = '';
+
     for (let i = 0; i < this.numSubmittedTries; i++) {
       for (let j = 0; j < WORD_LENGTH; j++) {
         const letter = this.tries[i].letters[j];
